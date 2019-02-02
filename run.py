@@ -13,7 +13,7 @@ def run():
     deleteCreatedTweet(driver)
     time.sleep(5)
 
-    #clickSearchFirstElement(driver, "#tesla")
+    searchTwitter(driver, "#tesla")
     time.sleep(15)
     driver.quit()
 

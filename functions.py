@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys # Import special keyboard keys
 from driver import *
 from config import *
-import time
+from time import sleep
 
 def setUpDriver():
     # Create a Firefox instance
@@ -13,15 +13,15 @@ def setUpDriver():
 
 def login(driver):
     # email input
-    input = driver.find_element_by_xpath("//form/fieldset/div[1]/input[@type='text']")
+    input = driver.find_element_by_class_name("js-username-field")
     input.click()
     input.clear()
     input.send_keys(USERNAME)
 
-    time.sleep(2)
+    sleep(DELAY)
 
     # pwd input
-    inputPwd = driver.find_element_by_xpath("//form/fieldset/div[2]/input[@type='password']")
+    inputPwd = driver.find_element_by_class_name("js-password-field")
     inputPwd.click()
     inputPwd.clear()
     inputPwd.send_keys(PASSWORD)
@@ -34,7 +34,7 @@ def sendTweet(driver, text):
     textarea.click()
     textarea.send_keys(text)
 
-    time.sleep(3)
+    sleep(DELAY)
 
     # send Tweet
     button = driver.find_element_by_xpath("//div[@id='timeline']//button[contains(@class,'tweet-action')]")
@@ -45,29 +45,24 @@ def deleteCreatedTweet(driver):
     button = driver.find_element_by_xpath("//div[@id='timeline']//button[contains(@class,'ProfileTweet-actionButton')]")
     button.click()
 
-    time.sleep(2)
+    sleep(DELAY)
 
     # click delete button
     delButton = driver.find_element_by_xpath("//div[@id='timeline']//li[contains(@class,'js-actionDelete')]")
     if delButton.is_displayed():
         delButton.click()
 
-    time.sleep(2)
+    sleep(DELAY)
 
     # click pop-up's delete button
     delButton = driver.find_element_by_css_selector(".EdgeButton--danger.delete-action")
     if delButton.is_displayed():
         delButton.click()
 
-def clickSearchFirstElement(driver, text):
-    # search input
+def searchTwitter(driver, text):
+    # Twitter search input
     searchInput = driver.find_element_by_id("search-query")
     searchInput.click()
     searchInput.clear()
     searchInput.send_keys(text)
-
-    time.sleep(2)
-    
-    # click first item
-    firstSearchedElement = driver.find_element_by_id("typeahead-item-1")
-    firstSearchedElement.click()
+    searchInput.submit()
