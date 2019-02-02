@@ -1,20 +1,20 @@
 from functions import *
-import time
+from time import sleep
 
 def run():
     driver = setUpDriver()
 
     login(driver)
-    time.sleep(4)
+    sleep(4)
 
     sendTweet(driver, "My first automated tweet using #Python and #Selenium")
-    time.sleep(6)
+    sleep(DELAY)
 
     deleteCreatedTweet(driver)
-    time.sleep(5)
+    sleep(DELAY)
 
-    #clickSearchFirstElement(driver, "#tesla")
-    time.sleep(15)
+    searchTwitter(driver, "#tesla")
+    sleep(4)
     driver.quit()
 
 # SCRIT EXECUTION
