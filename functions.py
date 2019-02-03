@@ -8,6 +8,7 @@ def setUpDriver():
     # Create a Firefox instance
     driver = webdriver.Firefox(executable_path=PATH_FIREFOX_DRIVER)
     # Navigate to this url
+    driver.base_url = BASE_URL
     driver.get(BASE_URL)
     return driver
 
