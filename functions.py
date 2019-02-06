@@ -5,14 +5,12 @@ from fake_useragent import UserAgent
 from driver import *
 from config import *
 from time import sleep
+import os
 
 driver = None
 
 def createUserAgent():
-    ua = UserAgent(cache=False).chrome
-    ua = UserAgent(cache=False)
-    print(ua)
-    return ua
+    return UserAgent()
 
 def firefoxInstance():
     global driver
@@ -20,19 +18,37 @@ def firefoxInstance():
     # Create a Firefox instance
     profile = webdriver.FirefoxProfile()
     profile.set_preference("general.useragent.override", createUserAgent())
-    driver = webdriver.Firefox(firefox_profile=profile, executable_path=PATH_FIREFOX_DRIVER)
+
+    options=webdriver.FirefoxOptions()
+    options.set_headless(True)
+
+    driver = webdriver.Firefox(firefox_profile=profile, options=options, executable_path=PATH_FIREFOX_DRIVER)
+    driver.execute_script("var s=window.document.createElement('script'); s.src='javascriptFirefox.js';window.document.head.appendChild(s);")
     driver.maximize_window()
 
 def chromeInstance():
     global driver
 
+    username = os.getenv("USERNAME")
+    userProfile = "C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default"
+
     # Create a Chrome instance
     options = webdriver.ChromeOptions()
+    options.add_argument("user-data-dir={}".format(userProfile))
     options.add_argument(f'user-agent={createUserAgent()}')
     options.add_argument("--disable-infobars")
     options.add_argument("--start-maximized")
+    options.add_argument("--incognito")
+    options.add_argument("--disable-plugins-discovery")
+    options.add_argument('--disable-extensions')
+    options.add_experimental_option(
+        "excludeSwitches", 
+        ["ignore-certificate-errors", 
+            "safebrowsing-disable-download-protection", 
+            "safebrowsing-disable-auto-update", 
+            "disable-client-side-phishing-detection"
+        ])
 
-    #profile.set_preference("general.useragent.override", "whateveryouwant")
     driver = webdriver.Chrome(options=options, executable_path=PATH_CHROME_DRIVER) 
 
 def setUpDriver():
@@ -46,8 +62,9 @@ def setUpDriver():
     # Navigate to this url
     driver.base_url = BASE_URL
     driver.get(BASE_URL)
+    driver.delete_all_cookies()
 
-def browserClose():
+def closeDriver():
     driver.quit()
 
 def login():

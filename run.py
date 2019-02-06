@@ -19,7 +19,7 @@ def run():
     searchTwitter("#tesla")
     sleep(4)
 
-    browserClose()
+    closeDriver()
 
 # SCRIT EXECUTION
 run()
