@@ -2,20 +2,24 @@ from functions import *
 from time import sleep
 
 def run():
-    driver = setUpDriver()
+    setUpDriver()
 
-    login(driver)
+    login()
     sleep(4)
 
-    sendTweet(driver, "My first automated tweet using #Python and #Selenium")
+    sendTweet("My first automated tweet using #Python and #Selenium")
     sleep(DELAY)
 
-    deleteCreatedTweet(driver)
+    dismissVisiblePopup()
     sleep(DELAY)
 
-    searchTwitter(driver, "#tesla")
+    deleteCreatedTweet()
+    sleep(DELAY)
+
+    searchTwitter("#tesla")
     sleep(4)
-    driver.quit()
+
+    browserClose()
 
 # SCRIT EXECUTION
 run()
